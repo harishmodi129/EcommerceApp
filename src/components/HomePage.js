@@ -36,7 +36,6 @@ const S = {
     fontWeight: 400,
   },
 
-  // ── Category filter bar ──
   filterBar: {
     padding: "14px 24px",
     display: "flex",
@@ -106,29 +105,25 @@ class HomePage extends React.Component {
   state = {
     products: [],
     categories: [],
-    selectedCategoryId: null, // null means "All"
+    selectedCategoryId: null,
     loading: true,
     error: null,
   };
 
   componentDidMount() {
-    // Load categories and products in parallel on first mount
     this._loadCategories();
     this._loadProducts();
   }
 
-  // Fetch categories from API — runs once on mount
   async _loadCategories() {
     try {
       const categories = await fetchCategories();
       this.setState({ categories });
     } catch (err) {
-      // Non-fatal — if categories fail, filter bar just won't show
       console.error("[HomePage] categories fetch error:", err);
     }
   }
 
-  // Fetch all products (no filter)
   async _loadProducts() {
     this.setState({ loading: true, error: null });
     try {
@@ -144,7 +139,6 @@ class HomePage extends React.Component {
     }
   }
 
-  // Fetch products for a specific category — always calls API, never filters locally
   async _loadProductsByCategory(categoryId) {
     this.setState({ loading: true, error: null });
     try {
@@ -159,18 +153,14 @@ class HomePage extends React.Component {
     }
   }
 
-  // Called when user clicks a category button
   _handleCategorySelect(categoryId) {
-    // Clicking the already-active category deselects it (goes back to All)
     const next =
       this.state.selectedCategoryId === categoryId ? null : categoryId;
     this.setState({ selectedCategoryId: next });
 
     if (next === null) {
-      // No category selected — fetch all products
       this._loadProducts();
     } else {
-      // Category selected — fetch from API with that category ID
       this._loadProductsByCategory(next);
     }
   }
@@ -197,10 +187,8 @@ class HomePage extends React.Component {
           <div style={S.headerSub}>Browse our collection</div>
         </header>
 
-        {/* ── Category Filter Bar ── */}
         {categories.length > 0 && (
           <div style={S.filterBar} data-testid="filter-bar">
-            {/* "All" button */}
             <button
               data-testid="filter-all"
               style={
@@ -213,7 +201,6 @@ class HomePage extends React.Component {
               All
             </button>
 
-            {/* One button per category — fetched from API */}
             {categories.map((cat) => (
               <button
                 key={cat.id}
@@ -231,7 +218,6 @@ class HomePage extends React.Component {
           </div>
         )}
 
-        {/* ── Error State ── */}
         {error && (
           <div style={S.errorBox}>
             <p>{error}</p>
@@ -248,7 +234,6 @@ class HomePage extends React.Component {
           </div>
         )}
 
-        {/* ── Loading Skeletons ── */}
         {loading && !error && (
           <div style={S.grid}>
             {Array.from({ length: 12 }).map((_, i) => (
@@ -257,7 +242,6 @@ class HomePage extends React.Component {
           </div>
         )}
 
-        {/* ── Product Grid ── */}
         {!loading && !error && products.length > 0 && (
           <div style={S.grid} data-testid="product-grid">
             {products.map((product, idx) => (
@@ -275,7 +259,6 @@ class HomePage extends React.Component {
           </div>
         )}
 
-        {/* ── Empty State ── */}
         {!loading && !error && products.length === 0 && (
           <div style={S.emptyBox} data-testid="empty-state">
             <p>No products found in this category.</p>
