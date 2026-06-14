@@ -182,7 +182,7 @@ class ProductDetailPage extends React.Component {
 
   _cleanImageUrl(url) {
     if (!url) return "https://placehold.co/600x432?text=No+Image";
-    return String(url).replace(/[\[\]"]/g, "");
+    return String(url).replace(/[[\]"]/g, "");
   }
 
   _handleAddToCart(product) {

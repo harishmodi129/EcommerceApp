@@ -59,7 +59,7 @@ class CartStore {
 
   _cleanImageUrl(url) {
     if (!url) return "";
-    return String(url).replace(/[\[\]"]/g, "");
+    return String(url).replace(/[[\]"]/g, "");
   }
 }
 
