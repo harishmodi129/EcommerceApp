@@ -75,7 +75,7 @@ class ProductCard extends React.Component {
 
   _cleanImageUrl(url) {
     if (!url) return null;
-    return String(url).replace(/[\[\]"]/g, "");
+    return String(url).replace(/[[\]"]/g, "");
   }
 
   render() {
